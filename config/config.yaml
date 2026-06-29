@@ -1,0 +1,22 @@
+# config/config.example.yaml
+# Copy to config.yaml and fill in YOUR values
+# config.yaml is gitignored - NEVER commit real keys
+
+# Mistral AI - https://console.mistral.ai
+mistral_api_key: "YOUR_MISTRAL_KEY"
+
+# Google Sheets
+google_sheets:
+  credentials_file: "config/google_sheets_credentials.json"
+  spreadsheet_id: "YOUR_SPREADSHEET_ID"
+  sheet_name: "DM Funnel Client Briefs"
+
+# Slack
+slack:
+  token: "YOUR_SLACK_TOKEN"
+  channel: "#dm-funnel-drafts"
+
+# Google Docs
+google_docs:
+  credentials_file: "config/google_sheets_credentials.json"
+  folder_id: "YOUR_FOLDER_ID"
