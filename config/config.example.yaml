@@ -1,0 +1,29 @@
+# config/config.example.yaml
+# ⚠️ Copy this to config.yaml and fill in YOUR values
+# config.yaml is gitignored - NEVER commit real keys
+
+# Get from https://console.anthropic.com → API Keys
+claude_api_key: "YOUR_CLAUDE_KEY_HERE"
+
+# Google Sheets Configuration
+google_sheets:
+  # Download from Google Cloud Console → Service Accounts
+  credentials_file: "config/google_sheets_credentials.json"
+  # From your Sheet URL: docs.google.com/spreadsheets/d/THIS_PART/edit
+  spreadsheet_id: "YOUR_SPREADSHEET_ID"
+  # Tab name at bottom of sheet (case-sensitive)
+  sheet_name: "Sheet1"
+
+# Slack Configuration
+slack:
+  # From https://api.slack.com/apps → OAuth & Permissions → Bot User OAuth Token
+  token: "YOUR_SLACK_BOT_TOKEN"
+  # Channel name with # or channel ID
+  channel: "#dm-funnel-drafts"
+
+# Google Docs Configuration
+google_docs:
+  # Same service account works if Docs + Drive APIs are enabled
+  credentials_file: "config/google_sheets_credentials.json"
+  # From Drive folder URL: drive.google.com/drive/folders/THIS_PART
+  folder_id: "YOUR_FOLDER_ID"
