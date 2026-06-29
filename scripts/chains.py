@@ -1,5 +1,5 @@
-"""LangChain chain definitions for DM funnel generation."""
-from langchain_anthropic import ChatAnthropic
+"""LangChain chain definitions for DM funnel generation using Mistral AI."""
+from langchain_mistralai import ChatMistralAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 import logging
@@ -22,21 +22,28 @@ def load_prompt(offer_type: str) -> ChatPromptTemplate:
 
 
 def get_funnel_generation_chain(config: dict):
-    """Create the base LangChain chain for funnel generation."""
-    llm = ChatAnthropic(
-        model="claude-3-opus-20240229",
+    """
+    Create the base LangChain chain for funnel generation using Mistral AI.
+    
+    Uses 'mistral-large-latest' model for best quality/price ratio.
+    Free alternatives if needed:
+    - 'mistral-small-latest' (faster, cheaper)
+    - 'open-mistral-nemo' (newest free model)
+    """
+    llm = ChatMistralAI(
+        model="mistral-large-latest",  # Meilleur rapport qualité/prix
         temperature=0.7,
         max_tokens=1000,
-        anthropic_api_key=config["claude_api_key"]
+        mistral_api_key=config["mistral_api_key"]
     )
     
     chain = llm | StrOutputParser()
-    logger.info("Created funnel generation chain with Claude 3 Opus")
+    logger.info("Created funnel generation chain with Mistral Large")
     return chain
 
 
 def generate_dm_funnel(brief: dict, config: dict) -> str:
-    """Generate a single DM funnel variant."""
+    """Generate a single DM funnel variant using Mistral AI."""
     prompt = load_prompt(brief['offer_type'])
     chain = get_funnel_generation_chain(config)
     
@@ -53,7 +60,7 @@ def generate_dm_funnel(brief: dict, config: dict) -> str:
 
 
 def generate_dm_funnel_variants(brief: dict, config: dict) -> dict:
-    """Generate 3 tonal variants of a DM funnel."""
+    """Generate 3 tonal variants of a DM funnel in parallel."""
     variants_config = {
         "variant_direct": {
             **brief,
@@ -69,13 +76,16 @@ def generate_dm_funnel_variants(brief: dict, config: dict) -> dict:
         }
     }
     
+    logger.info(f"Generating 3 variants for: {brief['client_name']}")
+    
     results = {}
     for variant_name, variant_brief in variants_config.items():
         try:
+            logger.info(f"Generating {variant_name}...")
             results[variant_name] = generate_dm_funnel(variant_brief, config)
-            logger.info(f"Generated {variant_name}")
+            logger.info(f"✓ {variant_name} generated")
         except Exception as e:
-            logger.error(f"Failed: {variant_name}: {e}")
-            results[variant_name] = f"Error: {str(e)}"
+            logger.error(f"✗ Failed to generate {variant_name}: {e}")
+            results[variant_name] = f"Generation failed: {str(e)}"
     
     return results
