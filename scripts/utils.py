@@ -16,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 def load_config() -> Dict:
-    """Load configuration from config.yaml with env var overrides."""
+    """Load configuration from config.yaml with environment variable overrides."""
     with open("config/config.yaml", "r") as file:
         config = yaml.safe_load(file)
     
-    # Override with environment variables if they exist
-    if os.getenv("CLAUDE_API_KEY"):
-        config["claude_api_key"] = os.getenv("CLAUDE_API_KEY")
+    # Override with environment variables if they exist (more secure)
+    if os.getenv("MISTRAL_API_KEY"):
+        config["mistral_api_key"] = os.getenv("MISTRAL_API_KEY")
     if os.getenv("SLACK_BOT_TOKEN"):
         config["slack"]["token"] = os.getenv("SLACK_BOT_TOKEN")
     if os.getenv("SPREADSHEET_ID"):
@@ -32,7 +32,6 @@ def load_config() -> Dict:
     
     logger.info("Configuration loaded")
     return config
-
 
 def save_to_google_docs(content: str, brief: Dict, config: Dict) -> str:
     """Save generated copy to Google Docs."""
