@@ -1,6 +1,7 @@
 # API keys and secrets
 config/.env
 config/*credentials*.json
+config/config.yaml        # ← AJOUTEZ CECI
 
 # Python
 __pycache__/
